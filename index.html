@@ -239,9 +239,59 @@ a.hs-link:hover { text-decoration: underline; color: var(--juno-green); }
 
 @media (max-width: 1200px) { .chart-grid-3 { grid-template-columns: 1fr 1fr; } }
 @media (max-width: 768px) { .chart-grid { grid-template-columns: 1fr; } .chart-grid-3 { grid-template-columns: 1fr; } .kpi-row { grid-template-columns: repeat(2, 1fr); } .container { padding: 16px; } }
+/* PASSWORD GATE */
+#passwordGate {
+  position: fixed; inset: 0; z-index: 9999;
+  background: var(--juno-black);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Outfit', system-ui, sans-serif;
+}
+#passwordGate .gate-box {
+  background: var(--juno-white); border-radius: 16px; padding: 48px 40px; width: 380px;
+  box-shadow: 0 25px 50px rgba(0,0,0,0.3); text-align: center;
+}
+#passwordGate .gate-logo {
+  font-size: 36px; font-weight: 700; color: var(--juno-black); letter-spacing: -1px; margin-bottom: 6px;
+}
+#passwordGate .gate-logo .go { display: inline-block; width: 18px; height: 18px; background: var(--juno-green); border-radius: 50%; vertical-align: middle; position: relative; top: -2px; margin: 0 1px; }
+#passwordGate .gate-sub { font-size: 14px; color: var(--juno-gray-500); margin-bottom: 32px; }
+#passwordGate input {
+  width: 100%; padding: 12px 16px; border: 2px solid var(--juno-gray-200); border-radius: 10px;
+  font-size: 15px; font-family: 'Outfit', system-ui, sans-serif; outline: none; transition: border-color 0.2s;
+}
+#passwordGate input:focus { border-color: var(--juno-green); box-shadow: 0 0 0 3px rgba(28,228,155,0.15); }
+#passwordGate .gate-btn {
+  width: 100%; margin-top: 16px; padding: 12px; background: var(--juno-dark-green); color: white;
+  border: none; border-radius: 10px; font-size: 15px; font-weight: 600; cursor: pointer;
+  font-family: 'Outfit', system-ui, sans-serif; transition: background 0.2s;
+}
+#passwordGate .gate-btn:hover { background: #015c4a; }
+#passwordGate .gate-error { color: var(--risk-critical); font-size: 13px; margin-top: 12px; min-height: 20px; }
 </style>
 </head>
 <body>
+
+<!-- PASSWORD GATE -->
+<div id="passwordGate">
+  <div class="gate-box">
+    <div class="gate-logo">JUN<span class="go"></span></div>
+    <div class="gate-sub">Enter password to view the Customer Dashboard</div>
+    <input type="password" id="gatePassword" placeholder="Password" onkeydown="if(event.key==='Enter')checkGatePassword()">
+    <button class="gate-btn" onclick="checkGatePassword()">Continue</button>
+    <div class="gate-error" id="gateError"></div>
+  </div>
+</div>
+<script>
+function checkGatePassword(){
+  var p=document.getElementById('gatePassword').value;
+  // Simple hash check (SHA-256 of the password)
+  crypto.subtle.digest('SHA-256',new TextEncoder().encode(p)).then(function(h){
+    var hex=Array.from(new Uint8Array(h)).map(function(b){return b.toString(16).padStart(2,'0')}).join('');
+    if(hex==='bd9712a3c51525a0fdb17065f366ce6356cc0f7dcd905314bb4737e668c688ab'){document.getElementById('passwordGate').style.display='none';}
+    else{document.getElementById('gateError').textContent='Incorrect password. Please try again.';document.getElementById('gatePassword').value='';document.getElementById('gatePassword').focus();}
+  });
+}
+</script>
 
 <!-- HEADER -->
 <div class="header">
