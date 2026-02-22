@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Juno ‚Äî Customer Dashboard</title>
+<title>Juno AI Customer Dashboard</title>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
@@ -239,6 +239,15 @@ a.hs-link:hover { text-decoration: underline; color: var(--juno-green); }
 
 @media (max-width: 1200px) { .chart-grid-3 { grid-template-columns: 1fr 1fr; } }
 @media (max-width: 768px) { .chart-grid { grid-template-columns: 1fr; } .chart-grid-3 { grid-template-columns: 1fr; } .kpi-row { grid-template-columns: repeat(2, 1fr); } .container { padding: 16px; } }
+
+.col-filter-row th { padding: 4px 4px; background: var(--juno-gray-50); border-bottom: 2px solid var(--juno-gray-200); top: 32px; position: sticky; z-index: 1; }
+.col-filter-row th:hover { background: var(--juno-gray-50); }
+.col-filter { width: 100%; padding: 4px 6px; border: 1px solid var(--juno-gray-200); border-radius: 4px; font-size: 10px; font-family: 'Outfit',system-ui,sans-serif; color: var(--juno-gray-700); background: white; outline: none; box-sizing: border-box; }
+.col-filter:focus { border-color: var(--juno-green); box-shadow: 0 0 0 2px rgba(28,228,155,0.15); }
+.col-filter::placeholder { color: var(--juno-gray-300); }
+.col-filter-select { width: 100%; padding: 4px 2px; border: 1px solid var(--juno-gray-200); border-radius: 4px; font-size: 10px; font-family: 'Outfit',system-ui,sans-serif; color: var(--juno-gray-700); background: white; outline: none; box-sizing: border-box; cursor: pointer; }
+.col-filter-select:focus { border-color: var(--juno-green); }
+
 /* PASSWORD GATE */
 #passwordGate {
   position: fixed; inset: 0; z-index: 9999;
@@ -335,7 +344,7 @@ function checkGatePassword(){
   <div class="section" id="sec-risk">
     <div class="kpi-row" id="riskKpis"></div>
     <div class="chart-grid">
-      <div class="chart-card full"><h3>Risk Matrix ‚Äî Usage vs Login Recency</h3><canvas id="chartRiskMatrix"></canvas></div>
+      <div class="chart-card full"><h3>Risk Matrix  -  Usage vs Login Recency</h3><canvas id="chartRiskMatrix"></canvas></div>
       <div class="chart-card"><h3>Churn Risk by Revenue Tier</h3><canvas id="chartRiskRevenue"></canvas></div>
       <div class="chart-card"><h3>Risk Score Distribution</h3><canvas id="chartRiskDist"></canvas></div>
     </div>
@@ -428,7 +437,7 @@ function checkGatePassword(){
       <div class="chart-card"><h3>Top 15 by Revenue</h3><canvas id="chartLbRevenue"></canvas></div>
     </div>
     <div class="chart-grid">
-      <div class="chart-card full"><h3>Returns per License ‚Äî Efficiency Ranking (Top 30)</h3><canvas id="chartLbEfficiency"></canvas></div>
+      <div class="chart-card full"><h3>Returns per License  -  Efficiency Ranking (Top 30)</h3><canvas id="chartLbEfficiency"></canvas></div>
     </div>
   </div>
 
@@ -721,7 +730,7 @@ function renderRisk() {
     options: {
       responsive: true,
       plugins: { legend: { labels: { usePointStyle: true, pointStyle: 'circle' } },
-        tooltip: { callbacks: { label: ctx => ctx.raw.label + ' ‚Äî ' + fmtMoney(ctx.raw.revenue) + ', ' + ctx.raw.y.toFixed(1) + '% util, ' + ctx.raw.x + ' days since login' } }
+        tooltip: { callbacks: { label: ctx => ctx.raw.label + '  -  ' + fmtMoney(ctx.raw.revenue) + ', ' + ctx.raw.y.toFixed(1) + '% util, ' + ctx.raw.x + ' days since login' } }
       },
       scales: {
         x: { title: { display: true, text: 'Days Since Last Login' }, grid: { color: '#f0f0f0' } },
@@ -782,6 +791,48 @@ function renderRisk() {
 let riskSortCol = '_riskScore', riskSortDir = -1;
 function setRiskSort(col) { if (riskSortCol === col) riskSortDir *= -1; else { riskSortCol = col; riskSortDir = -1; } renderRiskTable(); }
 
+function colFilterRow(prefix, cols, onInputFn) {
+  var r = '<tr class="col-filter-row">';
+  cols.forEach(function(col) {
+    var id = prefix + col;
+    var existing = document.getElementById(id);
+    var val = existing ? existing.value : '';
+    r += '<th><input class="col-filter" type="text" id="' + id + '" placeholder="Filter..." value="' + val.replace(/"/g,'&quot;') + '" oninput="' + onInputFn + '"></th>';
+  });
+  r += '</tr>';
+  return r;
+}
+
+function applyColFilters(list, prefix) {
+  var inputs = document.querySelectorAll('input[id^="' + prefix + '"]');
+  inputs.forEach(function(inp) {
+    var v = (inp.value || '').toLowerCase().trim();
+    if (!v) return;
+    var col = inp.id.substring(prefix.length);
+    list = list.filter(function(f) {
+      var raw = f[col];
+      if (raw === undefined || raw === null) raw = '';
+      var cellVal = String(raw).toLowerCase();
+      var numMatch = v.match(/^([><]=?)\s*(\d+\.?\d*)$/);
+      if (numMatch) {
+        var num = parseFloat(raw) || 0;
+        var threshold = parseFloat(numMatch[2]);
+        if (numMatch[1] === '>') return num > threshold;
+        if (numMatch[1] === '>=') return num >= threshold;
+        if (numMatch[1] === '<') return num < threshold;
+        if (numMatch[1] === '<=') return num <= threshold;
+      }
+      var rangeMatch = v.match(/^(\d+\.?\d*)\s*-\s*(\d+\.?\d*)$/);
+      if (rangeMatch) {
+        var num = parseFloat(raw) || 0;
+        return num >= parseFloat(rangeMatch[1]) && num <= parseFloat(rangeMatch[2]);
+      }
+      return cellVal.includes(v);
+    });
+  });
+  return list;
+}
+
 function renderRiskTable() {
   const search = (document.getElementById('riskSearch').value||'').toLowerCase();
   const level = document.getElementById('riskLevelFilter').value;
@@ -790,6 +841,7 @@ function renderRiskTable() {
   if (search) list = list.filter(f => f.name.toLowerCase().includes(search));
   if (level) list = list.filter(f => f._riskLevel === level);
   if (minRev) list = list.filter(f => (f.revenue||0) >= minRev);
+  list = applyColFilters(list, 'rcf_');
   list.sort((a,b) => {
     let av = a[riskSortCol], bv = b[riskSortCol];
     if (typeof av === 'string') return riskSortDir * av.localeCompare(bv);
@@ -807,6 +859,7 @@ function renderRiskTable() {
   h += '<th onclick="setRiskSort(\x27revenue\x27)">Revenue' + arrow('revenue') + '</th>';
   h += '<th onclick="setRiskSort(\x27preparation_count\x27)">Preps' + arrow('preparation_count') + '</th>';
   h += '<th>Software</th></tr>';
+  h += colFilterRow('rcf_', ['name','_riskScore','_riskLevel','_loginDays','utilization','unpaid','revenue','preparation_count','tax_software'], 'renderRiskTable()');
   list.forEach(f => {
     const riskBadge = '<span class="badge ' + f._riskLevel + '">' + riskLabel(f._riskLevel) + '</span>';
     const barWidth = Math.min(100, f._riskScore);
@@ -1107,6 +1160,7 @@ function renderAdoptionTable() {
     if (typeof av === 'string') return adoptionSortDir * av.localeCompare(bv);
     return adoptionSortDir * ((av||0) - (bv||0));
   });
+  list = applyColFilters(list, 'acf_');
   document.getElementById('adoptionFilterCount').textContent = list.length + ' firms shown';
   const arrow = col => adoptionSortCol === col ? (adoptionSortDir > 0 ? ' ‚ñ≤' : ' ‚ñº') : '';
   let h = '<table><tr>';
@@ -1118,6 +1172,7 @@ function renderAdoptionTable() {
   h += '<th onclick="setAdoptionSort(\x27revenue\x27)">Revenue' + arrow('revenue') + '</th>';
   h += '<th onclick="setAdoptionSort(\x27_loginDays\x27)">Last Login' + arrow('_loginDays') + '</th>';
   h += '<th>Software</th></tr>';
+  h += colFilterRow('acf_', ['name','utilization','used','purchased','preparation_count','revenue','_loginDays','tax_software'], 'renderAdoptionTable()');
   list.forEach(f => {
     const u = f.utilization || 0;
     const badge = u >= 0.2 ? 'healthy' : u >= 0.05 ? 'low' : u > 0 ? 'med' : 'critical';
@@ -1229,6 +1284,7 @@ function renderInactiveTable() {
     if (typeof av === 'string') return inactiveSortDir * av.localeCompare(bv);
     return inactiveSortDir * ((av||0) - (bv||0));
   });
+  list = applyColFilters(list, 'icf_');
   document.getElementById('inactiveFilterCount').textContent = list.length + ' firms shown';
   const arrow = col => inactiveSortCol === col ? (inactiveSortDir > 0 ? ' ‚ñ≤' : ' ‚ñº') : '';
   let h = '<table><tr>';
@@ -1241,13 +1297,14 @@ function renderInactiveTable() {
   h += '<th onclick="setInactiveSort(\x27unpaid\x27)">Unpaid' + arrow('unpaid') + '</th>';
   h += '<th>Risk</th>';
   h += '<th>Software</th></tr>';
+  h += colFilterRow('icf_', ['name','last_session','_inactiveDays','utilization','preparation_count','revenue','unpaid','_riskLevel','tax_software'], 'renderInactiveTable()');
   list.forEach(f => {
     const actDate = getActivityDate(f, metric);
     const days = daysSince(actDate);
     h += '<tr>';
     h += '<td><a class="hs-link" href="https://app.hubspot.com/contacts/45750757/company/' + f.id + '" target="_blank">' + f.name + '</a></td>';
     h += '<td>' + (actDate ? actDate.substring(0,10) : 'Never') + '</td>';
-    h += '<td>' + (days >= 9999 ? '‚Äî' : days + 'd') + '</td>';
+    h += '<td>' + (days >= 9999 ? ' - ' : days + 'd') + '</td>';
     h += '<td>' + fmtPct(f.utilization||0) + '</td>';
     h += '<td>' + fmt(f.preparation_count||0) + '</td>';
     h += '<td>' + fmtMoney(f.revenue||0) + '</td>';
@@ -1328,6 +1385,7 @@ function renderTable() {
   if (lc) list = list.filter(f => f.lifecycle === lc);
   if (search) list = list.filter(f => f.name.toLowerCase().includes(search));
   if (minUtil) list = list.filter(f => (f.utilization||0) >= minUtil);
+  list = applyColFilters(list, 'fcf_');
   list.sort((a,b) => {
     let av = a[firmsSortCol], bv = b[firmsSortCol];
     if (typeof av === 'string') return firmsSortDir * (av||'').localeCompare(bv||'');
@@ -1348,6 +1406,7 @@ function renderTable() {
   h += '<th onclick="setFirmsSort(\x27_riskScore\x27)">Risk' + arrow('_riskScore') + '</th>';
   h += '<th onclick="setFirmsSort(\x27sub_start\x27)">Sub Start' + arrow('sub_start') + '</th>';
   h += '</tr>';
+  h += colFilterRow('fcf_', ['name','tax_software','purchased','used','utilization','preparation_count','revenue','payments','unpaid','_loginDays','_riskScore','sub_start'], 'renderTable()');
   list.forEach(f => {
     h += '<tr>';
     h += '<td><a class="hs-link" href="https://app.hubspot.com/contacts/45750757/company/' + f.id + '" target="_blank">' + f.name + '</a></td>';
