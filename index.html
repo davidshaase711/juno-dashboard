@@ -83,7 +83,7 @@ tr:hover { background: #334155; }
 <div class="tab-nav">
   <button class="tab-btn active" onclick="switchTab('overview', this)">Overview</button>
   <button class="tab-btn" onclick="switchTab('lowusage', this)">Low Usage Firms <span class="pill pill-orange">154</span></button>
-  <button class="tab-btn" onclick="switchTab(\'weekly\', this)">Weekly Trends</button>
+  <button class="tab-btn" onclick="switchTab('weekly', this)">Weekly Trends</button>
 </div>
 
 <!-- OVERVIEW TAB -->
@@ -2594,7 +2594,6 @@ if (weeklyCtx) {
 }
 </script>
 
-<script>
 <script>
 function switchTab(tabName, btn) {
     document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
