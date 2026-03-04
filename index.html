@@ -71,17 +71,19 @@ tr:hover { background: #334155; }
 .criteria-box { background: #0f172a; border: 1px solid #334155; border-radius: 8px; padding: 14px 18px; margin-bottom: 20px; font-size: 0.85rem; color: #94a3b8; }
 .criteria-box strong { color: #e2e8f0; }
 </style>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
 </head>
 <body>
 <div class="hero">
   <h1>Juno Tax — Firm-Level Product Intelligence</h1>
   <div class="subtitle">HubSpot Contract Data × Mixpanel Usage Analytics</div>
-  <div class="update-badge">Updated March 2, 2026 — Comparing vs. Previous Baseline</div>
+  <div class="update-badge">Updated March 4, 2026 — Comparing vs. Previous Baseline</div>
 </div>
 
 <div class="tab-nav">
   <button class="tab-btn active" onclick="switchTab('overview', this)">Overview</button>
   <button class="tab-btn" onclick="switchTab('lowusage', this)">Low Usage Firms <span class="pill pill-orange">154</span></button>
+  <button class="tab-btn" onclick="switchTab(\'weekly\', this)">Weekly Trends</button>
 </div>
 
 <!-- OVERVIEW TAB -->
@@ -2349,7 +2351,250 @@ tr:hover { background: #334155; }
 <td style="font-size:0.8rem; color:#94a3b8;">&lt;15 returns (0)</td>
 </tr>
 </tbody></table></div></div></div></div>
+</div></div></div>
 
+<!-- WEEKLY TRENDS TAB -->
+<div id="tab-weekly" class="tab-content">
+<div class="container">
+
+<!-- Latest Week KPI Cards -->
+<div class="kpi-strip">
+    <div class="kpi">
+      <div class="label">Active Users (Latest Week)</div>
+      <div class="value">3,424</div>
+      <div class="delta delta-down">▼ -8.6% vs. prev week</div>
+    </div>
+    <div class="kpi">
+      <div class="label">Returns Created (Latest Week)</div>
+      <div class="value">699</div>
+      <div class="delta delta-up">▲ +21.2% vs. prev week</div>
+    </div>
+    <div class="kpi">
+      <div class="label">Returns Exported (Latest Week)</div>
+      <div class="value">864</div>
+      <div class="delta delta-up">▲ +11.0% vs. prev week</div>
+    </div>
+    <div class="kpi">
+      <div class="label">Returns Validated (Latest Week)</div>
+      <div class="value">656</div>
+      <div class="delta delta-up">▲ +11.0% vs. prev week</div>
+    </div>
+    <div class="kpi">
+      <div class="label">Returns Reviewed (Latest Week)</div>
+      <div class="value">500</div>
+      <div class="delta delta-up">▲ +13.0% vs. prev week</div>
+    </div>
+</div>
+
+<!-- Weekly Trends Chart -->
+<div class="section">
+  <h2>5-Metric Weekly Trends (8 Weeks)</h2>
+  <canvas id="weeklyChart" style="max-height: 400px;"></canvas>
+</div>
+
+<!-- Weekly Summary Table -->
+<div class="section">
+  <h2>Weekly Totals & Daily Averages</h2>
+  <table style="font-size: 0.8rem;">
+    <thead>
+      <tr>
+        <th>Week</th>
+        <th>Active Users (Avg/Day)</th>
+        <th>Returns Created (Avg/Day)</th>
+        <th>Returns Exported (Avg/Day)</th>
+        <th>Returns Validated (Avg/Day)</th>
+        <th>Returns Reviewed (Avg/Day)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="font-weight: 600; color: #f8fafc;">Jan 05 - Jan 11</td>
+        <td><span style="color: #60a5fa; font-weight: 600;">92.1</span></td>
+        <td><span style="color: #22c55e; font-weight: 600;">12.9</span></td>
+        <td><span style="color: #f97316; font-weight: 600;">0.0</span></td>
+        <td><span style="color: #a855f7; font-weight: 600;">0.0</span></td>
+        <td><span style="color: #06b6d4; font-weight: 600;">0.0</span></td>
+      </tr>
+      <tr>
+        <td style="font-weight: 600; color: #f8fafc;">Jan 12 - Jan 18</td>
+        <td><span style="color: #60a5fa; font-weight: 600;">103.7</span></td>
+        <td><span style="color: #22c55e; font-weight: 600;">17.1</span></td>
+        <td><span style="color: #f97316; font-weight: 600;">1.7</span></td>
+        <td><span style="color: #a855f7; font-weight: 600;">0.0</span></td>
+        <td><span style="color: #06b6d4; font-weight: 600;">0.0</span></td>
+      </tr>
+      <tr>
+        <td style="font-weight: 600; color: #f8fafc;">Jan 19 - Jan 25</td>
+        <td><span style="color: #60a5fa; font-weight: 600;">152.7</span></td>
+        <td><span style="color: #22c55e; font-weight: 600;">23.7</span></td>
+        <td><span style="color: #f97316; font-weight: 600;">12.4</span></td>
+        <td><span style="color: #a855f7; font-weight: 600;">0.0</span></td>
+        <td><span style="color: #06b6d4; font-weight: 600;">0.0</span></td>
+      </tr>
+      <tr>
+        <td style="font-weight: 600; color: #f8fafc;">Jan 26 - Feb 01</td>
+        <td><span style="color: #60a5fa; font-weight: 600;">196.4</span></td>
+        <td><span style="color: #22c55e; font-weight: 600;">34.9</span></td>
+        <td><span style="color: #f97316; font-weight: 600;">38.9</span></td>
+        <td><span style="color: #a855f7; font-weight: 600;">0.0</span></td>
+        <td><span style="color: #06b6d4; font-weight: 600;">0.0</span></td>
+      </tr>
+      <tr>
+        <td style="font-weight: 600; color: #f8fafc;">Feb 02 - Feb 08</td>
+        <td><span style="color: #60a5fa; font-weight: 600;">274.0</span></td>
+        <td><span style="color: #22c55e; font-weight: 600;">63.6</span></td>
+        <td><span style="color: #f97316; font-weight: 600;">72.7</span></td>
+        <td><span style="color: #a855f7; font-weight: 600;">0.0</span></td>
+        <td><span style="color: #06b6d4; font-weight: 600;">0.0</span></td>
+      </tr>
+      <tr>
+        <td style="font-weight: 600; color: #f8fafc;">Feb 09 - Feb 15</td>
+        <td><span style="color: #60a5fa; font-weight: 600;">381.6</span></td>
+        <td><span style="color: #22c55e; font-weight: 600;">76.1</span></td>
+        <td><span style="color: #f97316; font-weight: 600;">96.0</span></td>
+        <td><span style="color: #a855f7; font-weight: 600;">23.1</span></td>
+        <td><span style="color: #06b6d4; font-weight: 600;">15.7</span></td>
+      </tr>
+      <tr>
+        <td style="font-weight: 600; color: #f8fafc;">Feb 16 - Feb 22</td>
+        <td><span style="color: #60a5fa; font-weight: 600;">531.0</span></td>
+        <td><span style="color: #22c55e; font-weight: 600;">82.4</span></td>
+        <td><span style="color: #f97316; font-weight: 600;">111.3</span></td>
+        <td><span style="color: #a855f7; font-weight: 600;">84.4</span></td>
+        <td><span style="color: #06b6d4; font-weight: 600;">63.1</span></td>
+      </tr>
+      <tr>
+        <td style="font-weight: 600; color: #f8fafc;">Feb 23 - Mar 01</td>
+        <td><span style="color: #60a5fa; font-weight: 600;">489.1</span></td>
+        <td><span style="color: #22c55e; font-weight: 600;">99.9</span></td>
+        <td><span style="color: #f97316; font-weight: 600;">123.4</span></td>
+        <td><span style="color: #a855f7; font-weight: 600;">93.7</span></td>
+        <td><span style="color: #06b6d4; font-weight: 600;">71.4</span></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+</div>
+</div>
+
+<script>
+// Weekly Trends Chart
+const weeklyCtx = document.getElementById('weeklyChart');
+if (weeklyCtx) {
+  const weeks = ["Jan 05-11", "Jan 12-18", "Jan 19-25", "Jan 26-Feb 01", "Feb 02-08", "Feb 09-15", "Feb 16-22", "Feb 23-Mar 01"];
+  const weeklyData = {
+    activeUsers: [92.1, 103.7, 152.7, 196.4, 274.0, 381.6, 531.0, 489.1],
+    taxPrep: [12.9, 17.1, 23.7, 34.9, 63.6, 76.1, 82.4, 99.9],
+    export: [0, 1.7, 12.4, 38.9, 72.7, 96.0, 111.3, 123.4],
+    validate: [0, 0, 0, 0, 0, 23.1, 84.4, 93.7],
+    review: [0, 0, 0, 0, 0, 15.7, 63.1, 71.4]
+  };
+  
+  new Chart(weeklyCtx, {
+    type: 'line',
+    data: {
+      labels: weeks,
+      datasets: [
+        {
+          label: 'Active Users (Daily Avg)',
+          data: weeklyData.activeUsers,
+          borderColor: '#3b82f6',
+          backgroundColor: '#3b82f620',
+          borderWidth: 2.5,
+          tension: 0.4,
+          fill: true,
+          pointRadius: 5,
+          pointBackgroundColor: '#3b82f6',
+          pointBorderColor: '#0f172a',
+          pointBorderWidth: 2
+        },
+        {
+          label: 'Returns Created (Daily Avg)',
+          data: weeklyData.taxPrep,
+          borderColor: '#22c55e',
+          backgroundColor: '#22c55e20',
+          borderWidth: 2.5,
+          tension: 0.4,
+          fill: true,
+          pointRadius: 5,
+          pointBackgroundColor: '#22c55e',
+          pointBorderColor: '#0f172a',
+          pointBorderWidth: 2
+        },
+        {
+          label: 'Returns Exported (Daily Avg)',
+          data: weeklyData.export,
+          borderColor: '#f97316',
+          backgroundColor: '#f9731620',
+          borderWidth: 2.5,
+          tension: 0.4,
+          fill: true,
+          pointRadius: 5,
+          pointBackgroundColor: '#f97316',
+          pointBorderColor: '#0f172a',
+          pointBorderWidth: 2
+        },
+        {
+          label: 'Returns Validated (Daily Avg)',
+          data: weeklyData.validate,
+          borderColor: '#a855f7',
+          backgroundColor: '#a855f720',
+          borderWidth: 2.5,
+          tension: 0.4,
+          fill: true,
+          pointRadius: 5,
+          pointBackgroundColor: '#a855f7',
+          pointBorderColor: '#0f172a',
+          pointBorderWidth: 2
+        },
+        {
+          label: 'Returns Reviewed (Daily Avg)',
+          data: weeklyData.review,
+          borderColor: '#06b6d4',
+          backgroundColor: '#06b6d420',
+          borderWidth: 2.5,
+          tension: 0.4,
+          fill: true,
+          pointRadius: 5,
+          pointBackgroundColor: '#06b6d4',
+          pointBorderColor: '#0f172a',
+          pointBorderWidth: 2
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: true,
+      plugins: {
+        legend: {
+          display: true,
+          position: 'top',
+          labels: {
+            color: '#e2e8f0',
+            font: { size: 13, weight: '600' },
+            padding: 20,
+            usePointStyle: true
+          }
+        }
+      },
+      scales: {
+        y: {
+          beginAtZero: true,
+          grid: { color: '#334155' },
+          ticks: { color: '#94a3b8', font: { size: 12 } }
+        },
+        x: {
+          grid: { color: '#334155' },
+          ticks: { color: '#94a3b8', font: { size: 12 } }
+        }
+      }
+    }
+  });
+}
+</script>
+
+<script>
 <script>
 function switchTab(tabName, btn) {
     document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
