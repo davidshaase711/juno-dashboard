@@ -456,6 +456,102 @@ tr:hover { background: #334155; }
       </div>
     </div>
   </div>
+
+  <!-- Return Preparation Pipeline (Reviewer Analysis) -->
+  <div class="section">
+    <h2>Return Preparation Pipeline <span class="badge">REVIEWER ANALYSIS</span></h2>
+    <p style="color: #94a3b8; font-size: 0.85rem; margin-bottom: 16px;">Firm-level return preparation status from HubSpot. Tracks where firms are in the export/validation workflow. 360 real firms analyzed.</p>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 20px;">
+      <!-- Pipeline Funnel -->
+      <div>
+        <h3 style="font-size: 0.95rem; color: #f8fafc; margin-bottom: 12px;">Pipeline Stage Distribution</h3>
+        <div class="tier-row" style="grid-template-columns: 130px 1fr 50px 70px;">
+          <div class="tier-label">No Status</div>
+          <div class="tier-bar-container">
+            <div class="tier-bar" style="width:180px;background:#475569"></div>
+            <span class="tier-count">216</span>
+          </div>
+          <div class="tier-pct">60.0%</div>
+        </div>
+        <div class="tier-row" style="grid-template-columns: 130px 1fr 50px 70px;">
+          <div class="tier-label">Draft</div>
+          <div class="tier-bar-container">
+            <div class="tier-bar" style="width:3px;background:#94a3b8;min-width:3px"></div>
+            <span class="tier-count">4</span>
+          </div>
+          <div class="tier-pct">1.1%</div>
+        </div>
+        <div class="tier-row" style="grid-template-columns: 130px 1fr 50px 70px;">
+          <div class="tier-label">Needs Validation</div>
+          <div class="tier-bar-container">
+            <div class="tier-bar" style="width:8px;background:#f97316;min-width:3px"></div>
+            <span class="tier-count">9</span>
+          </div>
+          <div class="tier-pct">2.5%</div>
+        </div>
+        <div class="tier-row" style="grid-template-columns: 130px 1fr 50px 70px;">
+          <div class="tier-label">Validated</div>
+          <div class="tier-bar-container">
+            <div class="tier-bar" style="width:30px;background:#a855f7"></div>
+            <span class="tier-count">36</span>
+          </div>
+          <div class="tier-pct">10.0%</div>
+        </div>
+        <div class="tier-row" style="grid-template-columns: 130px 1fr 50px 70px;">
+          <div class="tier-label">Export Complete</div>
+          <div class="tier-bar-container">
+            <div class="tier-bar" style="width:79px;background:#22c55e"></div>
+            <span class="tier-count">95</span>
+          </div>
+          <div class="tier-pct">26.4%</div>
+        </div>
+      </div>
+
+      <!-- Reviewer Adoption by Tier -->
+      <div>
+        <h3 style="font-size: 0.95rem; color: #f8fafc; margin-bottom: 12px;">Pipeline Adoption by Utilization Tier</h3>
+        <canvas id="reviewerTierChart" style="max-height: 220px;"></canvas>
+      </div>
+    </div>
+
+    <!-- Key Findings -->
+    <div class="insights-grid">
+      <div class="insight-card">
+        <h3>40% of Firms in Pipeline</h3>
+        <p>144 of 360 firms have a return prep status set. These firms have smaller avg contracts (191 vs 258 returns) but similar utilization.</p>
+      </div>
+      <div class="insight-card positive">
+        <h3>Moderate Tier: 47% Pipeline Adoption</h3>
+        <p>Firms with 5-15% utilization have the highest pipeline adoption rate — the "ramping up" cohort is engaging the reviewer workflow most.</p>
+      </div>
+      <div class="insight-card warning">
+        <h3>29% of Zero-Usage Firms in Pipeline</h3>
+        <p>6 firms have a return prep status but 0% utilization — they've started the process but haven't completed returns yet.</p>
+      </div>
+      <div class="insight-card positive">
+        <h3>95 Firms Fully Exported</h3>
+        <p>26% of all firms have reached "Export Complete" — the most mature pipeline stage — representing strong workflow completion.</p>
+      </div>
+    </div>
+
+    <!-- Comparison Table -->
+    <div style="margin-top: 16px;">
+      <h3 style="font-size: 0.95rem; color: #f8fafc; margin-bottom: 8px;">Pipeline vs Non-Pipeline Comparison</h3>
+      <table style="font-size: 0.85rem;">
+        <thead>
+          <tr><th>Metric</th><th>In Pipeline (144)</th><th>Not in Pipeline (216)</th><th>Δ</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Avg Utilization</td><td style="color:#22c55e; font-weight:600;">17.9%</td><td>17.3%</td><td class="delta-up">+0.6pp</td></tr>
+          <tr><td>Avg Contract Size</td><td>191 returns</td><td style="color:#60a5fa; font-weight:600;">258 returns</td><td class="delta-down">−67</td></tr>
+          <tr><td>Validated/Reviewing</td><td style="color:#a855f7; font-weight:600;">45 firms (31%)</td><td>—</td><td>—</td></tr>
+          <tr><td>Export Complete</td><td style="color:#22c55e; font-weight:600;">95 firms (66%)</td><td>—</td><td>—</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
 </div>
 </div>
 
@@ -2665,6 +2761,55 @@ if (weeklyCtx) {
         x: {
           grid: { color: '#334155' },
           ticks: { color: '#94a3b8', font: { size: 12 } }
+        }
+      }
+    }
+  });
+}
+</script>
+
+<script>
+// Reviewer Tier Chart
+const revCtx = document.getElementById('reviewerTierChart');
+if (revCtx) {
+  new Chart(revCtx, {
+    type: 'bar',
+    data: {
+      labels: ['Zero', 'Light\n(1-5%)', 'Moderate\n(5-15%)', 'Active\n(15-30%)', 'Heavy\n(30-50%)', 'Power\n(50%+)'],
+      datasets: [{
+        label: 'Pipeline Adoption %',
+        data: [28.6, 36.7, 47.3, 40.5, 37.5, 40.0],
+        backgroundColor: ['#ef444480', '#f9731680', '#eab30880', '#22c55e80', '#3b82f680', '#8b5cf680'],
+        borderColor: ['#ef4444', '#f97316', '#eab308', '#22c55e', '#3b82f6', '#8b5cf6'],
+        borderWidth: 2,
+        borderRadius: 4
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: true,
+      indexAxis: 'y',
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            label: (ctx) => {
+              const counts = ['6/21', '36/98', '43/91', '30/74', '21/56', '8/20'];
+              return ctx.raw + '% (' + counts[ctx.dataIndex] + ' firms)';
+            }
+          }
+        }
+      },
+      scales: {
+        x: {
+          beginAtZero: true,
+          max: 55,
+          grid: { color: '#334155' },
+          ticks: { color: '#94a3b8', callback: v => v + '%' }
+        },
+        y: {
+          grid: { display: false },
+          ticks: { color: '#e2e8f0', font: { size: 11 } }
         }
       }
     }
