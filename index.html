@@ -74,11 +74,11 @@ tr:hover td{background:#1e293b55}
 <!-- OVERVIEW TAB -->
 <div id="tab-overview" class="tab-content active">
     <div class="kpi-grid">
-        <div class="kpi-card"><div class="label">Licensed Firms</div><div class="value">387</div><div class="sub">Active customer accounts</div></div>
-        <div class="kpi-card"><div class="label">Returns Purchased</div><div class="value">97,445</div><div class="sub">Total contracted returns</div></div>
-        <div class="kpi-card"><div class="label">Returns Used</div><div class="value">28,888</div><div class="sub">Returns prepared to date</div></div>
-        <div class="kpi-card"><div class="label">Platform Utilization</div><div class="value">29.6%</div><div class="sub">Used / Purchased</div></div>
-        <div class="kpi-card"><div class="label">Firms with Usage</div><div class="value">387</div><div class="sub">100.0% of all firms</div></div>
+        <div class="kpi-card"><div class="label">Licensed Firms</div><div class="value">480</div><div class="sub">Active customer accounts</div></div>
+        <div class="kpi-card"><div class="label">Returns Purchased</div><div class="value">109,590</div><div class="sub">Total contracted returns</div></div>
+        <div class="kpi-card"><div class="label">Returns Used</div><div class="value">32,015</div><div class="sub">Returns prepared to date</div></div>
+        <div class="kpi-card"><div class="label">Platform Utilization</div><div class="value">29.2%</div><div class="sub">Used / Purchased</div></div>
+        <div class="kpi-card"><div class="label">Firms with Usage</div><div class="value">416</div><div class="sub">100.0% of all firms</div></div>
         <div class="kpi-card"><div class="label">Near Capacity (&gt;80%)</div><div class="value">20</div><div class="sub">Upsell opportunities</div></div>
     </div>
     <div class="grid-2">
@@ -89,7 +89,7 @@ tr:hover td{background:#1e293b55}
         <div class="section"><h3>Contract Size vs Utilization</h3>
             <table><thead><tr><th>Tier</th><th>Firms</th><th>Purchased</th><th>Used</th><th>Utilization</th></tr></thead>
             <tbody><tr>
-        <td>Small (â¤100)</td><td>194</td><td>18,982</td>
+        <td>Small (Ã¢ÂÂ¤100)</td><td>194</td><td>18,982</td>
         <td>5,602</td><td>29.5%</td>
     </tr><tr>
         <td>Mid (101-300)</td><td>120</td><td>24,159</td>
@@ -685,7 +685,7 @@ tr:hover td{background:#1e293b55}
         <div class="kpi-card"><div class="label">Active Firms (Est.)</div><div class="value">~164</div><div class="sub" style="color:#22c55e;">&#9650; +79.1%</div></div>
         <div class="kpi-card"><div class="label">Firms w/ Returns</div><div class="value">~55</div><div class="sub" style="color:#22c55e;">&#9650; +79.1%</div></div>
     </div>
-    <div class="section" style="margin-bottom:8px;padding:8px 16px;background:#7c2d1244;border-color:#ef4444;font-size:13px;color:#fca5a5;">&#9888; Mixpanel weekly data last updated Mar 18. Refresh needed to add weeks through Mar 27.</div>
+    <div class="section" style="margin-bottom:8px;padding:8px 16px;background:#7c2d1244;border-color:#ef4444;font-size:13px;color:#fca5a5;">&#9888; Mixpanel weekly data last updated Apr 01. HubSpot data refreshed. Mixpanel weekly trends unchanged (connector needs reconnection).</div>
     <div class="section"><h3>7-Metric Weekly Trends (11 Weeks &mdash; Daily Averages)</h3><div style="height:380px;"><canvas id="weeklyChart"></canvas></div></div>
     <div class="section"><h3>Weekly Totals &amp; Daily Averages</h3>
         <div class="table-wrap"><table style="font-size:12px;">
@@ -825,8 +825,8 @@ const healthColors = ["#22c55e", "#eab308", "#64748b", "#3b82f6", "#ef4444"];
 const prepLabels = ["No Status", "Export Complete", "Review Completed", "Draft", "Needs Review"];
 const prepValues = [212, 130, 33, 5, 7];
 const ownerLabels = ["Devon", "Kendyll", "Makenzie", "Jonina", "Liam", "Alison", "Kurt"];
-const ownerUsed = [11272, 9122, 5457, 2757, 57, 18, 16];
-const ownerPurchased = [35025, 26091, 15435, 12074, 120, 5000, 1100];
+const ownerUsed = [12601, 10035, 5913, 3003, 92, 24, 16];
+const ownerPurchased = [39220, 29474, 16792, 11475, 754, 6112, 1100];
 
 function switchTab(name, btn) {
     document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
