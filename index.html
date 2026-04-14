@@ -57,13 +57,13 @@ tr:hover td{background:#1e293b55}
     <h1><span>Juno Tax</span> &mdash; Product Intelligence Dashboard</h1>
     <div style="display:flex;gap:12px;align-items:center;">
         <span class="badge">HubSpot + Mixpanel</span>
-        <span class="badge">Updated Apr 03, 2026</span>
+        <span class="badge">Updated Apr 13, 2026</span>
     </div>
 </div>
 
 <div class="tabs">
     <button class="tab-btn active" onclick="switchTab('overview',this)">Overview</button>
-    <button class="tab-btn" onclick="switchTab('lowusage',this)">Low Usage <span style="background:#ef444433;color:#ef4444;padding:1px 6px;border-radius:8px;font-size:11px;margin-left:4px;">72</span></button>
+    <button class="tab-btn" onclick="switchTab('lowusage',this)">Low Usage <span style="background:#ef444433;color:#ef4444;padding:1px 6px;border-radius:8px;font-size:11px;margin-left:4px;">112</span></button>
     <button class="tab-btn" onclick="switchTab('highusage',this)">High Usage</button>
     <button class="tab-btn" onclick="switchTab('trends',this)">Weekly Trends</button>
     <button class="tab-btn" onclick="switchTab('owners',this)">By Owner</button>
@@ -74,12 +74,12 @@ tr:hover td{background:#1e293b55}
 <!-- OVERVIEW TAB -->
 <div id="tab-overview" class="tab-content active">
     <div class="kpi-grid">
-        <div class="kpi-card"><div class="label">Licensed Firms</div><div class="value">589</div><div class="sub">Active customer accounts</div></div>
-        <div class="kpi-card"><div class="label">Returns Purchased</div><div class="value">131,501</div><div class="sub">Total contracted returns</div></div>
-        <div class="kpi-card"><div class="label">Returns Used</div><div class="value">35,797</div><div class="sub">Returns prepared to date</div></div>
-        <div class="kpi-card"><div class="label">Platform Utilization</div><div class="value">27.2%</div><div class="sub">Used / Purchased</div></div>
-        <div class="kpi-card"><div class="label">Firms with Usage</div><div class="value">416</div><div class="sub">100.0% of all firms</div></div>
-        <div class="kpi-card"><div class="label">Near Capacity (&gt;80%)</div><div class="value">20</div><div class="sub">Upsell opportunities</div></div>
+        <div class="kpi-card"><div class="label">Licensed Firms</div><div class="value">482</div><div class="sub">Active customer accounts</div></div>
+        <div class="kpi-card"><div class="label">Returns Purchased</div><div class="value">108,216</div><div class="sub">Total contracted returns</div></div>
+        <div class="kpi-card"><div class="label">Returns Used</div><div class="value">38,647</div><div class="sub">Returns prepared to date</div></div>
+        <div class="kpi-card"><div class="label">Platform Utilization</div><div class="value">35.7%</div><div class="sub">Used / Purchased</div></div>
+        <div class="kpi-card"><div class="label">Firms with Usage</div><div class="value">459</div><div class="sub">95.2% of all firms</div></div>
+        <div class="kpi-card"><div class="label">Near Capacity (&gt;80%)</div><div class="value">35</div><div class="sub">Upsell opportunities</div></div>
     </div>
     <div class="grid-2">
         <div class="section"><h3>Utilization Distribution</h3><div id="tierBars"></div></div>
@@ -89,130 +89,51 @@ tr:hover td{background:#1e293b55}
         <div class="section"><h3>Contract Size vs Utilization</h3>
             <table><thead><tr><th>Tier</th><th>Firms</th><th>Purchased</th><th>Used</th><th>Utilization</th></tr></thead>
             <tbody><tr>
-        <td>Small (ÃÂ¢ÃÂÃÂ¤100)</td><td>227</td><td>22,626</td>
-        <td>6,316</td><td>27.9%</td>
+        <td>Small (â¤100)</td><td>273</td><td>25,249</td>
+        <td>8,104</td><td>32.1%</td>
     </tr><tr>
-        <td>Mid (101-300)</td><td>140</td><td>28,145</td>
-        <td>9,308</td><td>33.1%</td>
+        <td>Mid (101-300)</td><td>130</td><td>25,941</td>
+        <td>10,956</td><td>42.2%</td>
     </tr><tr>
-        <td>Large (301-700)</td><td>62</td><td>29,147</td>
-        <td>9,197</td><td>31.6%</td>
+        <td>Large (301-700)</td><td>57</td><td>26,741</td>
+        <td>11,313</td><td>42.3%</td>
     </tr><tr>
-        <td>Enterprise (700+)</td><td>20</td><td>34,117</td>
-        <td>6,596</td><td>19.3%</td>
+        <td>Enterprise (700+)</td><td>21</td><td>30,285</td>
+        <td>8,274</td><td>27.3%</td>
     </tr></tbody></table>
         </div>
         <div class="section"><h3>Return Pipeline Status</h3><div class="chart-box"><canvas id="prepChart"></canvas></div></div>
     </div>
     <div class="section"><h3>Top 20 Firms by Returns Used</h3>
-        <div class="table-wrap"><table><thead><tr><th>#</th><th>Firm</th><th>Used</th><th>Purchased</th><th>Utilization</th><th>Health</th></tr></thead>
-        <tbody><tr>
-        <td>1</td><td>Vincere Tax</td><td>875</td>
-        <td>2,500</td>
-        <td><div class="util-bar-container"><div class="util-bar" style="width:35.0%;background:#22c55e"></div><span>35.0%</span></div></td>
-        <td><span class="health-dot health-green">Green</span></td>
-    </tr><tr>
-        <td>2</td><td>Dark Horse CPAs</td><td>784</td>
-        <td>2,000</td>
-        <td><div class="util-bar-container"><div class="util-bar" style="width:39.2%;background:#22c55e"></div><span>39.2%</span></div></td>
-        <td><span class="health-dot health-green">Green</span></td>
-    </tr><tr>
-        <td>3</td><td>Travel Nurse Tax</td><td>653</td>
-        <td>1,300</td>
-        <td><div class="util-bar-container"><div class="util-bar" style="width:50.2%;background:#8b5cf6"></div><span>50.2%</span></div></td>
-        <td><span class="health-dot health-yellow">Yellow</span></td>
-    </tr><tr>
-        <td>4</td><td>Pacific Financial Navigators</td><td>601</td>
-        <td>810</td>
-        <td><div class="util-bar-container"><div class="util-bar" style="width:74.2%;background:#8b5cf6"></div><span>74.2%</span></div></td>
-        <td><span class="health-dot health-green">Green</span></td>
-    </tr><tr>
-        <td>5</td><td>CPA Financial Advantage</td><td>522</td>
-        <td>900</td>
-        <td><div class="util-bar-container"><div class="util-bar" style="width:58.0%;background:#8b5cf6"></div><span>58.0%</span></div></td>
-        <td><span class="health-dot health-green">Green</span></td>
-    </tr><tr>
-        <td>6</td><td>Firestone Tax & Accounting Services (CHILD)</td><td>481</td>
-        <td>1,700</td>
-        <td><div class="util-bar-container"><div class="util-bar" style="width:28.3%;background:#eab308"></div><span>28.3%</span></div></td>
-        <td><span class="health-dot health-unknown">Unknown</span></td>
-    </tr><tr>
-        <td>7</td><td>Duncan & Associates</td><td>434</td>
-        <td>700</td>
-        <td><div class="util-bar-container"><div class="util-bar" style="width:62.0%;background:#8b5cf6"></div><span>62.0%</span></div></td>
-        <td><span class="health-dot health-green">Green</span></td>
-    </tr><tr>
-        <td>8</td><td>JCW Tax & Accounting</td><td>429</td>
-        <td>710</td>
-        <td><div class="util-bar-container"><div class="util-bar" style="width:60.4%;background:#8b5cf6"></div><span>60.4%</span></div></td>
-        <td><span class="health-dot health-green">Green</span></td>
-    </tr><tr>
-        <td>9</td><td>Tax Rite</td><td>421</td>
-        <td>500</td>
-        <td><div class="util-bar-container"><div class="util-bar" style="width:84.2%;background:#8b5cf6"></div><span>84.2%</span></div></td>
-        <td><span class="health-dot health-green">Green</span></td>
-    </tr><tr>
-        <td>10</td><td>Harbor Group</td><td>411</td>
-        <td>500</td>
-        <td><div class="util-bar-container"><div class="util-bar" style="width:82.2%;background:#8b5cf6"></div><span>82.2%</span></div></td>
-        <td><span class="health-dot health-green">Green</span></td>
-    </tr><tr>
-        <td>11</td><td>ROR Tax Professionals</td><td>407</td>
-        <td>605</td>
-        <td><div class="util-bar-container"><div class="util-bar" style="width:67.3%;background:#8b5cf6"></div><span>67.3%</span></div></td>
-        <td><span class="health-dot health-green">Green</span></td>
-    </tr><tr>
-        <td>12</td><td>Roberta A Otto CPA</td><td>382</td>
-        <td>500</td>
-        <td><div class="util-bar-container"><div class="util-bar" style="width:76.4%;background:#8b5cf6"></div><span>76.4%</span></div></td>
-        <td><span class="health-dot health-green">Green</span></td>
-    </tr><tr>
-        <td>13</td><td>Seaside Resources</td><td>309</td>
-        <td>530</td>
-        <td><div class="util-bar-container"><div class="util-bar" style="width:58.3%;background:#8b5cf6"></div><span>58.3%</span></div></td>
-        <td><span class="health-dot health-green">Green</span></td>
-    </tr><tr>
-        <td>14</td><td>The Jones CPA Group</td><td>298</td>
-        <td>505</td>
-        <td><div class="util-bar-container"><div class="util-bar" style="width:59.0%;background:#8b5cf6"></div><span>59.0%</span></div></td>
-        <td><span class="health-dot health-green">Green</span></td>
-    </tr><tr>
-        <td>15</td><td>PAZTAX</td><td>294</td>
-        <td>1,000</td>
-        <td><div class="util-bar-container"><div class="util-bar" style="width:29.4%;background:#eab308"></div><span>29.4%</span></div></td>
-        <td><span class="health-dot health-green">Green</span></td>
-    </tr><tr>
-        <td>16</td><td>ElevatedCPA</td><td>288</td>
-        <td>700</td>
-        <td><div class="util-bar-container"><div class="util-bar" style="width:41.1%;background:#22c55e"></div><span>41.1%</span></div></td>
-        <td><span class="health-dot health-green">Green</span></td>
-    </tr><tr>
-        <td>17</td><td>LedgerWay</td><td>283</td>
-        <td>1,000</td>
-        <td><div class="util-bar-container"><div class="util-bar" style="width:28.3%;background:#eab308"></div><span>28.3%</span></div></td>
-        <td><span class="health-dot health-yellow">Yellow</span></td>
-    </tr><tr>
-        <td>18</td><td>Thomas & Company CPA</td><td>280</td>
-        <td>350</td>
-        <td><div class="util-bar-container"><div class="util-bar" style="width:80.0%;background:#8b5cf6"></div><span>80.0%</span></div></td>
-        <td><span class="health-dot health-green">Green</span></td>
-    </tr><tr>
-        <td>19</td><td>Wills & Associates (CHILD)</td><td>277</td>
-        <td>500</td>
-        <td><div class="util-bar-container"><div class="util-bar" style="width:55.4%;background:#8b5cf6"></div><span>55.4%</span></div></td>
-        <td><span class="health-dot health-green">Green</span></td>
-    </tr><tr>
-        <td>20</td><td>RLH Tax Services</td><td>267</td>
-        <td>505</td>
-        <td><div class="util-bar-container"><div class="util-bar" style="width:52.9%;background:#8b5cf6"></div><span>52.9%</span></div></td>
-        <td><span class="health-dot health-green">Green</span></td>
-    </tr></tbody></table></div>
+        <div class="table-wrap"><table><thead><tr><th>#</th><th>Firm</th><th>Used</th><th>Purchased</th><th>Utilization</th><th>Health</th><th>Owner</th></tr></thead>
+        <tbody>
+                        <tr><td>1</td><td>Vincere Tax</td><td>1,158</td><td>2,500</td><td>46.3%</td><td><span class="health-green">Green</span></td><td>Jonina</td></tr>
+                        <tr><td>2</td><td>Dark Horse CPAs</td><td>1,062</td><td>2,000</td><td>53.1%</td><td><span class="health-green">Green</span></td><td>Devon</td></tr>
+                        <tr><td>3</td><td>Travel Nurse Tax</td><td>857</td><td>1,300</td><td>65.9%</td><td><span class="health-green">Green</span></td><td>Jonina</td></tr>
+                        <tr><td>4</td><td>Firestone Tax & Accounting Services (CHILD)</td><td>723</td><td>1,700</td><td>42.5%</td><td><span class="health-green">Green</span></td><td>Devon</td></tr>
+                        <tr><td>5</td><td>Pacific Financial Navigators</td><td>714</td><td>810</td><td>88.1%</td><td><span class="health-green">Green</span></td><td>Devon</td></tr>
+                        <tr><td>6</td><td>CPA Financial Advantage</td><td>647</td><td>900</td><td>71.9%</td><td><span class="health-green">Green</span></td><td>Devon</td></tr>
+                        <tr><td>7</td><td>ROR Tax Professionals</td><td>515</td><td>605</td><td>85.1%</td><td><span class="health-green">Green</span></td><td>Devon</td></tr>
+                        <tr><td>8</td><td>JCW Tax & Accounting</td><td>498</td><td>710</td><td>70.1%</td><td><span class="health-green">Green</span></td><td>Kendyll</td></tr>
+                        <tr><td>9</td><td>Duncan & Associates</td><td>480</td><td>700</td><td>68.6%</td><td><span class="health-green">Green</span></td><td>Kendyll</td></tr>
+                        <tr><td>10</td><td>Roberta A Otto CPA</td><td>461</td><td>500</td><td>92.2%</td><td><span class="health-green">Green</span></td><td>Jonina</td></tr>
+                        <tr><td>11</td><td>ElevatedCPA</td><td>459</td><td>700</td><td>65.6%</td><td><span class="health-green">Green</span></td><td>Devon</td></tr>
+                        <tr><td>12</td><td>Harbor Group</td><td>459</td><td>500</td><td>91.8%</td><td><span class="health-green">Green</span></td><td>Makenzie</td></tr>
+                        <tr><td>13</td><td>LedgerWay</td><td>457</td><td>1,000</td><td>45.7%</td><td><span class="health-green">Green</span></td><td>Devon</td></tr>
+                        <tr><td>14</td><td>Tax Rite</td><td>421</td><td>500</td><td>84.2%</td><td><span class="health-green">Green</span></td><td>Kendyll</td></tr>
+                        <tr><td>15</td><td>Daniel J Feyka CPA PC</td><td>370</td><td>1,000</td><td>37.0%</td><td><span class="health-green">Green</span></td><td>Kendyll</td></tr>
+                        <tr><td>16</td><td>Henry, Waters & Associates</td><td>369</td><td>513</td><td>71.9%</td><td><span class="health-green">Green</span></td><td>Kendyll</td></tr>
+                        <tr><td>17</td><td>PAZTAX</td><td>364</td><td>1,000</td><td>36.4%</td><td><span class="health-green">Green</span></td><td>Devon</td></tr>
+                        <tr><td>18</td><td>The Jones CPA Group</td><td>360</td><td>505</td><td>71.3%</td><td><span class="health-green">Green</span></td><td>Devon</td></tr>
+                        <tr><td>19</td><td>Seaside Resources</td><td>354</td><td>530</td><td>66.8%</td><td><span class="health-green">Green</span></td><td>Makenzie</td></tr>
+                        <tr><td>20</td><td>Wills & Associates (CHILD)</td><td>351</td><td>500</td><td>70.2%</td><td><span class="health-green">Green</span></td><td>Devon</td></tr>
+                    </tbody></table></div>
     </div>
 </div>
 
 <!-- LOW USAGE TAB -->
 <div id="tab-lowusage" class="tab-content">
-    <div class="alert">&#9888; 72 firms with &lt;10% utilization &mdash; potential churn risk or onboarding gaps</div>
+    <div class="alert">&#9888; 112 firms with &lt;10% utilization &mdash; potential churn risk or onboarding gaps</div>
     <div class="search-bar">
         <input type="text" id="lowSearch" placeholder="Search firms..." oninput="filterTable('lowTable','lowSearch','lowFilter')">
         <select id="lowFilter" onchange="filterTable('lowTable','lowSearch','lowFilter')">
@@ -818,15 +739,15 @@ tr:hover td{background:#1e293b55}
 
 <script>
 const tierLabels = ["No Usage (0%)", "Light (1-5%)", "Moderate (5-15%)", "Active (15-30%)", "Heavy (30-50%)", "Power (50%+)"];
-const tierValues = [2, 45, 98, 102, 118, 105];
+const tierValues = [26, 56, 74, 72, 95, 158];
 const healthLabels = ["Green", "Yellow", "Unknown", "Blue", "Red"];
-const healthValues = [421, 38, 12, 72, 3];
+const healthValues = [253, 74, 26, 72, 56];
 const healthColors = ["#22c55e", "#eab308", "#64748b", "#3b82f6", "#ef4444"];
 const prepLabels = ["No Status", "Export Complete", "Review Completed", "Draft", "Needs Review"];
 const prepValues = [289, 178, 48, 14, 17];
-const ownerLabels = ["Devon", "Kendyll", "Makenzie", "Jonina", "Liam", "Alison", "Kurt"];
-const ownerUsed = [14375, 11931, 7086, 3398, 394, 327, 297];
-const ownerPurchased = [37570, 31479, 17297, 14285, 4995, 6112, 1400];
+const ownerLabels = ["Devon", "Kendyll", "Makenzie", "Jonina", "Liam", "Sunny", "Alison", "Kurt"];
+const ownerUsed = [15039, 12101, 7421, 3558, 116, 80, 24, 16];
+const ownerPurchased = [37870, 29424, 17297, 11075, 775, 1600, 6012, 1100];
 
 function switchTab(name, btn) {
     document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
