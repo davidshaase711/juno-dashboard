@@ -53,6 +53,22 @@ tr:hover td{background:#1e293b55}
 </style>
 </head>
 <body>
+<div id="auth-gate" style="position:fixed;top:0;left:0;width:100%;height:100%;background:#0f172a;z-index:99999;display:flex;align-items:center;justify-content:center;">
+  <div style="background:#1e293b;border:1px solid #334155;border-radius:16px;padding:40px;text-align:center;max-width:380px;width:90%;">
+    <div style="font-size:32px;margin-bottom:8px;">&#128274;</div>
+    <h2 style="color:#f1f5f9;margin:0 0 8px;font-size:20px;">Juno Product Intelligence</h2>
+    <p style="color:#94a3b8;font-size:13px;margin:0 0 24px;">Enter password to continue</p>
+    <input id="auth-pw" type="password" placeholder="Password" style="width:100%;padding:12px 16px;border-radius:8px;border:1px solid #334155;background:#0f172a;color:#f1f5f9;font-size:15px;outline:none;box-sizing:border-box;margin-bottom:12px;" onkeydown="if(event.key==='Enter')document.getElementById('auth-btn').click()">
+    <button id="auth-btn" onclick="checkAuth()" style="width:100%;padding:12px;border-radius:8px;border:none;background:#3b82f6;color:#fff;font-size:15px;font-weight:600;cursor:pointer;">Unlock Dashboard</button>
+    <p id="auth-err" style="color:#ef4444;font-size:13px;margin:8px 0 0;display:none;">Incorrect password</p>
+  </div>
+</div>
+<script>
+async function hashPw(p){var e=new TextEncoder().encode(p);var h=await crypto.subtle.digest("SHA-256",e);return Array.from(new Uint8Array(h)).map(function(b){return b.toString(16).padStart(2,"0")}).join("")}
+async function checkAuth(){var p=document.getElementById("auth-pw").value;var h=await hashPw(p);if(h==="4379fff18a03397f47b970536e692afafba759c9cfa6858c1f8e0e77de38e5fe"){document.getElementById("auth-gate").remove();sessionStorage.setItem("juno-auth","1")}else{document.getElementById("auth-err").style.display="block";document.getElementById("auth-pw").value=""}}
+if(sessionStorage.getItem("juno-auth")==="1"){document.getElementById("auth-gate").remove()}else{document.getElementById("auth-pw").focus()}
+</script>
+
 <div class="header">
     <h1><span>Juno Tax</span> &mdash; Product Intelligence Dashboard</h1>
     <div style="display:flex;gap:12px;align-items:center;">
